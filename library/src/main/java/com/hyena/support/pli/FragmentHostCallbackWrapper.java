@@ -4,7 +4,6 @@
 
 package com.hyena.support.pli;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
@@ -12,9 +11,12 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentHostCallback;
 import android.view.LayoutInflater;
 import android.view.View;
+
+import com.hyena.support.pli.helper.InvokeHelper;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -24,79 +26,85 @@ import java.io.PrintWriter;
  */
 public class FragmentHostCallbackWrapper extends FragmentHostCallback {
 
-    public FragmentHostCallbackWrapper(Context context, Handler handler, int windowAnimations) {
-        super(context, handler, windowAnimations);
+    private FragmentHostCallback mWrapper;
+
+    public FragmentHostCallbackWrapper(FragmentHostCallback wrapper, FragmentActivity activity) {
+        super(activity, null, 0);
+        this.mWrapper = wrapper;
+        Handler handler = (Handler) InvokeHelper.getFieldValue(activity, "mHandler");
+        InvokeHelper.setFieldValue(this, "mActivity", activity);
+        InvokeHelper.setFieldValue(this, "mHandler", handler);
     }
 
     @Override
     public void onDump(String prefix, FileDescriptor fd, PrintWriter writer, String[] args) {
-        super.onDump(prefix, fd, writer, args);
+        mWrapper.onDump(prefix, fd, writer, args);
     }
 
     @Override
     public boolean onShouldSaveFragmentState(Fragment fragment) {
-        return super.onShouldSaveFragmentState(fragment);
+        return mWrapper.onShouldSaveFragmentState(fragment);
     }
 
     @Override
     public LayoutInflater onGetLayoutInflater() {
-        return super.onGetLayoutInflater();
+        return mWrapper.onGetLayoutInflater();
     }
 
     @Override
     public void onSupportInvalidateOptionsMenu() {
-        super.onSupportInvalidateOptionsMenu();
+        mWrapper.onSupportInvalidateOptionsMenu();
     }
 
     @Override
     public void onStartActivityFromFragment(Fragment fragment, Intent intent, int requestCode) {
-        super.onStartActivityFromFragment(fragment, intent, requestCode);
+        mWrapper.onStartActivityFromFragment(fragment, intent, requestCode);
     }
 
     @Override
     public void onStartActivityFromFragment(Fragment fragment, Intent intent, int requestCode, @Nullable Bundle options) {
-        super.onStartActivityFromFragment(fragment, intent, requestCode, options);
+        mWrapper.onStartActivityFromFragment(fragment, intent, requestCode, options);
     }
 
     @Override
     public void onStartIntentSenderFromFragment(Fragment fragment, IntentSender intent, int requestCode, @Nullable Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags, Bundle options) throws IntentSender.SendIntentException {
-        super.onStartIntentSenderFromFragment(fragment, intent, requestCode, fillInIntent, flagsMask, flagsValues, extraFlags, options);
+        mWrapper.onStartIntentSenderFromFragment(fragment, intent, requestCode, fillInIntent, flagsMask, flagsValues, extraFlags, options);
     }
 
     @Override
     public void onRequestPermissionsFromFragment(@NonNull Fragment fragment, @NonNull String[] permissions, int requestCode) {
-        super.onRequestPermissionsFromFragment(fragment, permissions, requestCode);
+        mWrapper.onRequestPermissionsFromFragment(fragment, permissions, requestCode);
     }
 
     @Override
     public boolean onShouldShowRequestPermissionRationale(@NonNull String permission) {
-        return super.onShouldShowRequestPermissionRationale(permission);
+        return mWrapper.onShouldShowRequestPermissionRationale(permission);
     }
 
     @Override
     public boolean onHasWindowAnimations() {
-        return super.onHasWindowAnimations();
+        return mWrapper.onHasWindowAnimations();
     }
 
     @Override
     public int onGetWindowAnimations() {
-        return super.onGetWindowAnimations();
+        return mWrapper.onGetWindowAnimations();
     }
 
     @Nullable
     @Override
     public View onFindViewById(int id) {
-        return super.onFindViewById(id);
+        return mWrapper.onFindViewById(id);
     }
 
     @Override
     public boolean onHasView() {
-        return super.onHasView();
+        return mWrapper.onHasView();
     }
 
     @Nullable
     @Override
     public Object onGetHost() {
-        return null;
+        return mWrapper.onGetHost();
     }
 }

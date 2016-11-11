@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.hyena.support.pli.ActivityHelper;
 import com.hyena.support.pli.ActivityWrapper;
+import com.hyena.support.pli.FragmentHostCallbackWrapper;
 import com.hyena.support.pli.Module;
 import com.hyena.support.pli.helper.InvokeHelper;
 
@@ -45,8 +46,7 @@ public class MainActivity extends FragmentActivity {
         super.onAttachFragment(fragment);
         if (fragment != null) {
             FragmentHostCallback callback = (FragmentHostCallback) InvokeHelper.getFieldValue(fragment, "mHost");
-            InvokeHelper.setFieldValue(callback, "mContext", activity);
-            InvokeHelper.setFieldValue(callback, "mActivity", activity);
+            InvokeHelper.setFieldValue(fragment, "mHost", new FragmentHostCallbackWrapper(callback, activity));
         }
     }
 
