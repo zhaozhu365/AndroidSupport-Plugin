@@ -6,7 +6,7 @@ package com.hyena.support.pli;
 
 import android.util.Log;
 
-import com.hyena.support.pli.helper.FileUtils;
+import com.hyena.framework.utils.FileUtils;
 
 import java.io.File;
 import java.io.IOException;

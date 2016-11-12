@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
  * 反射相关控制类
  * @author yangzc on 15/9/7.
  */
-public class InvokeHelper {
+public class InvokeHelper extends com.hyena.framework.debug.InvokeHelper {
 
     /**
      * 获得字段值

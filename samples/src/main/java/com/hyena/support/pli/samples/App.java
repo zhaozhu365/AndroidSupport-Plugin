@@ -6,7 +6,7 @@ package com.hyena.support.pli.samples;
 
 import android.content.Context;
 
-import com.hyena.support.pli.BaseApp;
+import com.hyena.framework.utils.BaseApp;
 
 /**
  * Created by yangzc on 16/11/10.
